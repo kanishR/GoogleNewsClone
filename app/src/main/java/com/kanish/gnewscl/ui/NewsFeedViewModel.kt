@@ -20,6 +20,6 @@ class NewsFeedViewModel(private  val repository: NewsFeedRepository,
         }
     }
     fun setViewState(state:NewsFeedScreenState){
-        mNewsFeedState.postValue(state)
+        mNewsFeedState.value = state
     }
 }
