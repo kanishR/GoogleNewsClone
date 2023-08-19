@@ -6,9 +6,9 @@ plugins {
 android {
     namespace 'com.kanish.gnewscl'
     compileSdk 33
-    /*def localProperties = new Properties()
+    def localProperties = new Properties()
     localProperties.load(new FileInputStream(rootProject.file("local.properties")))
-*/
+
     defaultConfig {
         applicationId "com.kanish.gnewscl"
         minSdk 21
@@ -20,9 +20,9 @@ android {
     }
 
     buildTypes {
-/*        debug{
+        debug{
             buildConfigField("String", "API_KEY", "\"" + localProperties['apiKey'] + "\"")
-        }*/
+        }
 
         release {
             minifyEnabled false
