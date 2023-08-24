@@ -13,6 +13,7 @@ import com.kanish.gnewscl.data.network.FeedNetworkService
 import com.kanish.gnewscl.data.repository.NewsFeedRepository
 import com.kanish.gnewscl.domain.NewsFeedScreenState
 import com.kanish.gnewscl.ui.FeedVmFactory
+import com.kanish.gnewscl.ui.NewsFeedFragment
 import com.kanish.gnewscl.ui.NewsFeedViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -26,8 +27,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        subscribe()
-        newsFeedViewModel.fetchNewsFeed()
+//        subscribe()
+//        newsFeedViewModel.fetchNewsFeed()
+        supportFragmentManager.beginTransaction().add(R.id.flNews,NewsFeedFragment()).addToBackStack("newsFrag").commitAllowingStateLoss()
     }
 
     private fun subscribe() {

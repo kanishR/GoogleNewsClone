@@ -7,5 +7,5 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("/api/1/news")
-    suspend fun fetchNewsApi(@Query("apiKey") apiKey:String,@Query("category") category:String) : ApiNewsFeed
+    suspend fun fetchNewsApi(@Query("apiKey") apiKey:String,@Query("category") category:String, @Query("country") country:String) : ApiNewsFeed
 }
