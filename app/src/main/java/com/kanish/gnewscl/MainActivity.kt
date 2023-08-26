@@ -20,7 +20,8 @@ class MainActivity : AppCompatActivity() {
     private val newsFeedViewModel : NewsFeedViewModel by lazy {
         val apiService=RetrofitClient.apiService
         val networkService= FeedNetworkService(apiService)
-        val newsRepository = NewsFeedRepository(networkService)
+        val newsApplication: NewsApplication =application as NewsApplication
+        val newsRepository = NewsFeedRepository(networkService, newsApplication.getNewsDb().newsDao())
        ViewModelProvider(this, factory = FeedVmFactory(newsRepository, application ))[NewsFeedViewModel::class.java]
 
     }

@@ -14,7 +14,7 @@ class FeedNetworkService(val apiService: ApiService) {
 
     suspend fun fetchNewsFeed(category:String):List<NewsResult>{
         return try {
-            val result = apiService.fetchNewsApi(BuildConfig.API_KEY,"top","us")
+            val result = apiService.fetchNewsApi(BuildConfig.API_KEY,"top","in")
             result.results
         }catch (e:Exception){
             e.printStackTrace()
