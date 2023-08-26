@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.kanish.gnewscl.R
 import com.kanish.gnewscl.data.entity.NewsResult
 
-class NewsListAdapter(var itemList:List<NewsResult>):RecyclerView.Adapter<NewsListViewHolder>() {
+class NewsListAdapter(var itemList:ArrayList<NewsResult>):RecyclerView.Adapter<NewsListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsListViewHolder {
       return NewsListViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_news,parent,false))

@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kanish.gnewscl.NewsApplication
 import com.kanish.gnewscl.R
 import com.kanish.gnewscl.data.RetrofitClient
 import com.kanish.gnewscl.data.network.FeedNetworkService
@@ -20,7 +21,7 @@ class NewsFeedFragment:Fragment() {
     private val newsFeedViewModel : NewsFeedViewModel by lazy {
         val apiService= RetrofitClient.apiService
         val networkService= FeedNetworkService(apiService)
-        val newsRepository = NewsFeedRepository(networkService)
+        val newsRepository = NewsFeedRepository(networkService,NewsApplication.newsDatabase.newsDao())
         ViewModelProvider(this, factory = FeedVmFactory(newsRepository, requireActivity().application ))[NewsFeedViewModel::class.java]
 
     }
@@ -47,8 +48,32 @@ class NewsFeedFragment:Fragment() {
     }
 
     private fun setUpRecycler() {
-      recyclerView.layoutManager= LinearLayoutManager(context)
+        val lmanager= LinearLayoutManager(context)
+      recyclerView.layoutManager= lmanager
         recyclerView.adapter=newsListAdapter
+        Log.d("kanish","news List Size"+newsListAdapter.itemList.size)
+        recyclerView.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val visibleCount= lmanager.childCount
+                val totalItemCount = lmanager.itemCount
+                val firstVisibleItem =lmanager.findFirstVisibleItemPosition()
+
+                Log.d("kanish","visibleCount"+visibleCount+ "totalItemCount>>"+totalItemCount +"firstVisibleItem"+firstVisibleItem)
+                if ((firstVisibleItem+visibleCount)>=totalItemCount-5){
+                    Log.d("kanish","Load more data call")
+                    loadMoreData()
+                }
+            }
+        })
+    }
+
+    private fun loadMoreData() {
+        newsFeedViewModel.fetchNewsFeed()
     }
 
     private fun setUpObservers() {
@@ -57,8 +82,10 @@ class NewsFeedFragment:Fragment() {
                 NewsFeedScreenState.FeedError -> Log.d("kanish","some Errror")
                 NewsFeedScreenState.Loading ->  Log.d("kanish","loading")
                 is NewsFeedScreenState.NewsFeedAvailable -> {
-                    newsListAdapter.itemList= it.result
+                    newsListAdapter.itemList.addAll(it.result)
+                    Log.d("kanish","news List Size"+newsListAdapter.itemList.size)
                     newsListAdapter.notifyDataSetChanged()
+
                 }
             }
         })
